@@ -3,28 +3,19 @@ package com.example.fatih.ocrtest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.concurrent.ExecutionException;
 
-import javax.net.ssl.HttpsURLConnection;
+import java.io.File;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int MY_INTENT_CLICK=302;
-    String path;
-    SendRequest req = new SendRequest();
-    String res;
+    String path="Deneme";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +26,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 selectImageFromGallery();
-/*                try {
-                    res = req.execute(path).get();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Log.i("REPONSE GET FROM MAIN",res);*/
             }
         });
     }
@@ -66,54 +51,48 @@ public class MainActivity extends AppCompatActivity {
                 //MEDIA GALLERY
                 selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                 path = selectedImagePath;
-                Log.i("Image File Path", ""+selectedImagePath);
+                Log.e("Image File Path", path);
+
+                new LongOperation().execute();
             }
         }
-
-        try {
-            res = req.execute(path).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Log.i("REPONSE GET FROM MAIN",res);
     }
-}
-
-    class SendRequest extends AsyncTask<String, Void, String>{
-
-        String finalResponse;
-
+    private class LongOperation extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-        try{
-            Log.i("PATH",params[0]);
-            String url = "https://ocr.a9t9.com/api/Parse/Image";
-            String charset = "UTF-8";
-            String apikey = "helloworld";
-            String file = params[0]; // Path'ten file oluşturup dene!!!
+            try{
+                Log.e("PATH",path);
+                String charset = "UTF-8";
+                String apikey = "helloworld";
 
-            String query = String.format("apikey=%s&file=%s",
-                    URLEncoder.encode(apikey, charset),
-                    URLEncoder.encode(file, charset));
+                String requestURL = "https://ocr.a9t9.com/api/Parse/Image";
 
-            URLConnection connection = new URL(url).openConnection();
-            connection.setDoOutput(true);
-            connection.setRequestProperty("Accept-Charset", charset);
-            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
-
-            OutputStream output = connection.getOutputStream();
-                output.write(query.getBytes(charset));
-
-
-            InputStream response = connection.getInputStream();
-            java.util.Scanner s = new java.util.Scanner(response).useDelimiter("\\A");
-            finalResponse = s.hasNext() ? s.next() : "";
-
-        }catch (Exception e){
-            Log.e("ERROR ON BUILDING URL",e.toString());
+                MultiPartUtility multipart = new MultiPartUtility(requestURL, charset);
+                multipart.addFormField("apikey", apikey);
+                multipart.addFormField("param_name_3", "param_value");
+                multipart.addFilePart("file", new File(path));
+                List<String> response = multipart.finish(); // response from server.
+                for (int i=0;i<response.size();i++){
+                    Log.e("SONUC:::",response.get(i));
+                }
+            }catch (Exception e){
+                Log.e("ERROR ON BUILDING URL",e.toString());
+            }
+            return null;
         }
 
-        return finalResponse;
+        @Override
+        protected void onPostExecute(String result) {
+            Log.e("###Arkaplan İşlemi##","İşlem Bitti");
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Log.e("###Arkaplan İşlemi##","İşlem Başladı");
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
         }
     }
-
+}
