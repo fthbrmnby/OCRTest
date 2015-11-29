@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.fatih.ocrtest.MainActivity">
 
+
     <Button
         android:id="@+id/select_photo_from_gallery"
         android:layout_width="wrap_content"
@@ -23,5 +24,21 @@
         android:text="Take a Photo"
         android:layout_centerInParent="true"
         android:layout_below="@id/select_photo_from_gallery"/>
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Result:"
+        android:textSize="16sp"
+        />
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/label"
+        android:text="Goes Here..."
+        android:textSize="16sp"
+        android:paddingLeft="8dp"/>
 
 </RelativeLayout>
