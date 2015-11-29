@@ -25,20 +25,4 @@
         android:layout_centerInParent="true"
         android:layout_below="@id/select_photo_from_gallery"/>
 
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Result:"
-        android:textSize="16sp"
-        />
-    <TextView
-        android:id="@+id/result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/label"
-        android:text="Goes Here..."
-        android:textSize="16sp"
-        android:paddingLeft="8dp"/>
-
 </RelativeLayout>

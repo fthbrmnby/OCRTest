@@ -2,18 +2,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/show_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/confirmation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="execute"
+        android:text="Use Thıs Image"
         android:layout_below="@id/show_image"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Result:"
+        android:textSize="16sp"
+        android:layout_below="@id/confirmation_button"
+        android:paddingTop="16dp"
+        android:textColor="@android:color/black"
+        />
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/label"
+        android:text="Goes Here..."
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:layout_below="@id/confirmation_button"
+        android:paddingTop="16dp"
+        android:textIsSelectable="true"
+        android:textColor="@android:color/black"/>
 </RelativeLayout>

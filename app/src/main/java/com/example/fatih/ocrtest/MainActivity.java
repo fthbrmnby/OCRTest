@@ -20,9 +20,8 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int MY_INTENT_CLICK=302;
-    String path="Deneme";
-    ProgressDialog pDialog;
+    private static final int MY_INTENT_CLICK = 302;
+    String path = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void selectImageFromGallery(){
+    public void selectImageFromGallery() {
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -46,11 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        TextView resultView = (TextView) findViewById(R.id.result);
-        if (resultCode == RESULT_OK)
-        {
-            if (requestCode == MY_INTENT_CLICK)
-            {
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == MY_INTENT_CLICK) {
                 if (null == data) return;
 
                 String selectedImagePath;
@@ -61,70 +58,10 @@ public class MainActivity extends AppCompatActivity {
                 path = selectedImagePath;
                 Log.e("Image File Path", path);
 
-                try {
-                    resultView.setText(new LongOperation().execute().get());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
+                Intent i = new Intent(MainActivity.this, ImageConfirmation.class);
+                i.putExtra("path", path);
+                startActivity(i);
             }
-        }
-    }
-    private class LongOperation extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            try{
-                Log.e("PATH",path);
-                String charset = "UTF-8";
-                String apikey = "helloworld";
-
-                String requestURL = "https://ocr.a9t9.com/api/Parse/Image";
-
-                MultiPartUtility multipart = new MultiPartUtility(requestURL, charset);
-                multipart.addFormField("apikey", apikey);
-                multipart.addFormField("param_name_3", "param_value");
-                multipart.addFilePart("file", new File(path));
-                List<String> response = multipart.finish(); // response from server.
-                String res="";
-                JSONObject jObj;
-
-                for (int i=0;i<response.size();i++){
-                    Log.e("SONUC:::",response.get(i));
-                    res += response.get(i);
-                }
-                jObj = new JSONObject(res);
-                JSONArray aJsonArray = jObj.getJSONArray("ParsedResults");
-                String parsedText="";
-                for (int i =0; i<aJsonArray.length(); i++){
-                    JSONObject c = aJsonArray.getJSONObject(i);
-                    parsedText = c.getString("ParsedText");
-                }
-                return parsedText;
-            }catch (Exception e){
-                Log.e("ERROR ON BUILDING URL",e.toString());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Log.e("###Arkaplan İşlemi##","İşlem Bitti");
-            if (pDialog.isShowing())
-                pDialog.dismiss();
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(MainActivity.this);
-            pDialog.setMessage("Please Wait...");
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
         }
     }
 }
