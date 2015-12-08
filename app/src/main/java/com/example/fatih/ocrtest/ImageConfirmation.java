@@ -16,13 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Fatih on 29.11.2015.
@@ -94,7 +91,7 @@ public class ImageConfirmation extends AppCompatActivity{
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(ImageConfirmation.this);
-            pDialog.setMessage("Please Wait...");
+            pDialog.setMessage("Processing Image");
             pDialog.setCancelable(false);
             pDialog.show();
         }
@@ -142,6 +139,7 @@ public class ImageConfirmation extends AppCompatActivity{
 
             final TextView resultView = (TextView) findViewById(R.id.result);
             resultView.setText(parsedText);
+
         }
 
         @Override
