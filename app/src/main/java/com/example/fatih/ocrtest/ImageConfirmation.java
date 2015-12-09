@@ -103,7 +103,7 @@ public class ImageConfirmation extends AppCompatActivity{
                 String charset = "UTF-8";
                 String apikey = "helloworld";
 
-                String requestURL = "https://ocr.a9t9.com/api/Parse/Image";
+                String requestURL = "https://ocr.space/api/Parse/Image";
 
                 MultiPartUtility multipart = new MultiPartUtility(requestURL, charset);
                 multipart.addFormField("apikey", apikey);
